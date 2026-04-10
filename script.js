@@ -294,20 +294,73 @@ if (!prefersReducedMotion.matches) {
 
 // Background Thunders (Visual Lightning Flashes)
 const stormContainer = document.querySelector(".page-storm");
+
+// Web Audio API Ambient Thunder
+let audioCtx = null;
+let thunderGainNode = null;
+
+const initThunderAudio = () => {
+  if (audioCtx || prefersReducedMotion.matches) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  const bufferSize = audioCtx.sampleRate * 5;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = buffer.getChannelData(0);
+  
+  let lastOut = 0;
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    output[i] = (lastOut + (0.02 * white)) / 1.02;
+    lastOut = output[i];
+    output[i] *= 3.5;
+  }
+
+  const noiseSource = audioCtx.createBufferSource();
+  noiseSource.buffer = buffer;
+  noiseSource.loop = true;
+
+  const lowpass = audioCtx.createBiquadFilter();
+  lowpass.type = "lowpass";
+  lowpass.frequency.value = 100;
+
+  const peaking = audioCtx.createBiquadFilter();
+  peaking.type = "peaking";
+  peaking.frequency.value = 60;
+  peaking.Q.value = 1;
+  peaking.gain.value = 15;
+
+  thunderGainNode = audioCtx.createGain();
+  thunderGainNode.gain.value = 0.2; // default ambient rumble volume
+
+  noiseSource.connect(lowpass);
+  lowpass.connect(peaking);
+  peaking.connect(thunderGainNode);
+  thunderGainNode.connect(audioCtx.destination);
+
+  noiseSource.start();
+};
+
+document.addEventListener('click', initThunderAudio, { once: true });
+document.addEventListener('keydown', initThunderAudio, { once: true });
+
 if (stormContainer && !prefersReducedMotion.matches) {
   const triggerThunder = () => {
-    // Add active flash class
     stormContainer.classList.remove("thunder-flash-active");
-    // force reflow
     void stormContainer.offsetWidth;
     stormContainer.classList.add("thunder-flash-active");
 
-    // Randomize next thunder strike (between 3s to 12s)
+    // modulate volume dynamically if audio context is running
+    if (thunderGainNode && audioCtx && audioCtx.state === 'running') {
+      thunderGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+      thunderGainNode.gain.setValueAtTime(0.6, audioCtx.currentTime);
+      thunderGainNode.gain.exponentialRampToValueAtTime(0.1, audioCtx.currentTime + 1.2);
+      thunderGainNode.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 3);
+    }
+
     const nextStrike = Math.random() * 9000 + 3000;
     setTimeout(triggerThunder, nextStrike);
   };
   
-  // Start first thunder after a short delay
   setTimeout(triggerThunder, Math.random() * 2000 + 1000);
 }
 
