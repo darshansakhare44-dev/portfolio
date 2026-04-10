@@ -25,6 +25,20 @@
   box-sizing: border-box;
 }
 
+/* Allow hovering over background grid through empty layout space */
+body, main, section, .section, .container, .hero-grid, .process-layout, 
+.process-steps, .metrics-grid, .contact-links, .services-grid, .section-heading,
+.hero-copy, .page-storm {
+  pointer-events: none !important;
+}
+
+/* Explicitly re-enable pointer events for interactive elements and text */
+.site-header, .site-footer, .card, .process-card, .feature-panel, 
+.hero-panel, .metric-card, .contact-panel, .contact-item, 
+.button, h1, h2, h3, p, span, li, strong, a, svg, img, article, aside.feature-panel {
+  pointer-events: auto !important;
+}
+
 html {
   scroll-behavior: auto;
 }
@@ -210,7 +224,8 @@ main.has-section-focus .section[id].is-current {
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2.5rem;
+  padding: 0.5rem 1.5rem;
 }
 
 .site-nav a {
@@ -593,36 +608,10 @@ main.has-section-focus .section[id].is-current {
   background: linear-gradient(180deg, rgba(25, 25, 25, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%);
 }
 
-/* Contact Lightning Hover */
+/* Contact Default Layout */
 .contact-item {
   position: relative;
   overflow: hidden;
-}
-.contact-item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  background: 
-    linear-gradient(90deg, transparent, rgba(255, 42, 42, 0.4), transparent),
-    radial-gradient(circle at 10% 50%, rgba(255, 42, 42, 0.6) 0%, transparent 20%),
-    radial-gradient(circle at 90% 50%, rgba(255, 42, 42, 0.6) 0%, transparent 20%);
-  mix-blend-mode: screen;
-}
-
-.contact-item:hover::after {
-  animation: contact-lightning 0.4s steps(5) infinite;
-}
-
-@keyframes contact-lightning {
-  0%, 100% { opacity: 0; transform: scaleY(1); }
-  10% { opacity: 0.8; transform: scaleY(1.2) translateY(-2px); }
-  20% { opacity: 0.1; }
-  30% { opacity: 0.9; transform: scaleY(0.8) translateY(2px); }
-  50% { opacity: 0.2; }
-  60% { opacity: 1; filter: brightness(1.5); }
-  80% { opacity: 0; }
 }
 
 .reveal {
@@ -852,6 +841,33 @@ main.has-section-focus .section[id].is-current {
   15% { opacity: 0.8; }
   25% { opacity: 0; }
   100% { opacity: 0; }
+}
+
+/* Infinite RGB Block Layer */
+#interactive-grid {
+  position: fixed;
+  inset: -50px;
+  z-index: -6;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+  pointer-events: auto; /* Grid catches the hover where layout wrappers let it pass through */
+  gap: 1px;
+}
+.grid-block {
+  background: transparent;
+  border-radius: 6px;
+  /* When cursor removed should go down instant smoothly */
+  transition: transform 0.15s ease-out, background-color 0.2s ease-out, box-shadow 0.2s ease-out; 
+}
+.grid-block:hover {
+  /* Smoothly come up when cursor moving on it */
+  transform: scale(1.5) translateZ(0); 
+  background-color: var(--block-color);
+  box-shadow: 0 0 25px var(--block-color), 0 0 8px var(--block-color) inset;
+  z-index: 2;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease-in, box-shadow 0.3s ease-in;
 }
 
 /* Tool Icons (Glitch Geometry Removed) */

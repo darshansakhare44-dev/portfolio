@@ -295,53 +295,29 @@ if (!prefersReducedMotion.matches) {
 // Background Thunders (Visual Lightning Flashes)
 const stormContainer = document.querySelector(".page-storm");
 
-// Web Audio API Ambient Thunder
-let audioCtx = null;
-let thunderGainNode = null;
+// Smooth scroll glow
+const stormVeins = document.querySelectorAll(".storm-vein");
+let lastScrollY = window.scrollY;
+let scrollGlowOpacity = 0;
 
-const initThunderAudio = () => {
-  if (audioCtx || prefersReducedMotion.matches) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+window.addEventListener("scroll", () => {
+  const deltaY = Math.abs(window.scrollY - lastScrollY);
+  lastScrollY = window.scrollY;
 
-  const bufferSize = audioCtx.sampleRate * 5;
-  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const output = buffer.getChannelData(0);
-  
-  let lastOut = 0;
-  for (let i = 0; i < bufferSize; i++) {
-    const white = Math.random() * 2 - 1;
-    output[i] = (lastOut + (0.02 * white)) / 1.02;
-    lastOut = output[i];
-    output[i] *= 3.5;
+  // increase glow intensity depending on scroll speed, capped at 0.8
+  scrollGlowOpacity = Math.min(scrollGlowOpacity + deltaY * 0.008, 0.8);
+}, { passive: true });
+
+const decayScrollGlow = () => {
+  if (scrollGlowOpacity > 0) {
+    scrollGlowOpacity = Math.max(0, scrollGlowOpacity - 0.015);
+    stormVeins.forEach((vein) => {
+      vein.style.opacity = scrollGlowOpacity;
+    });
   }
-
-  const noiseSource = audioCtx.createBufferSource();
-  noiseSource.buffer = buffer;
-  noiseSource.loop = true;
-
-  const lowpass = audioCtx.createBiquadFilter();
-  lowpass.type = "lowpass";
-  lowpass.frequency.value = 100;
-
-  const peaking = audioCtx.createBiquadFilter();
-  peaking.type = "peaking";
-  peaking.frequency.value = 60;
-  peaking.Q.value = 1;
-  peaking.gain.value = 15;
-
-  thunderGainNode = audioCtx.createGain();
-  thunderGainNode.gain.value = 0.2; // default ambient rumble volume
-
-  noiseSource.connect(lowpass);
-  lowpass.connect(peaking);
-  peaking.connect(thunderGainNode);
-  thunderGainNode.connect(audioCtx.destination);
-
-  noiseSource.start();
+  requestAnimationFrame(decayScrollGlow);
 };
-
-document.addEventListener('click', initThunderAudio, { once: true });
-document.addEventListener('keydown', initThunderAudio, { once: true });
+requestAnimationFrame(decayScrollGlow);
 
 if (stormContainer && !prefersReducedMotion.matches) {
   const triggerThunder = () => {
@@ -349,18 +325,57 @@ if (stormContainer && !prefersReducedMotion.matches) {
     void stormContainer.offsetWidth;
     stormContainer.classList.add("thunder-flash-active");
 
-    // modulate volume dynamically if audio context is running
-    if (thunderGainNode && audioCtx && audioCtx.state === 'running') {
-      thunderGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-      thunderGainNode.gain.setValueAtTime(0.6, audioCtx.currentTime);
-      thunderGainNode.gain.exponentialRampToValueAtTime(0.1, audioCtx.currentTime + 1.2);
-      thunderGainNode.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 3);
-    }
-
     const nextStrike = Math.random() * 9000 + 3000;
     setTimeout(triggerThunder, nextStrike);
   };
   
   setTimeout(triggerThunder, Math.random() * 2000 + 1000);
 }
+
+// Interactive RGB Grid Background
+const createGrid = () => {
+  let gridContainer = document.getElementById('interactive-grid');
+  if (!gridContainer) {
+    gridContainer = document.createElement('div');
+    gridContainer.id = 'interactive-grid';
+    gridContainer.setAttribute('aria-hidden', 'true');
+    // Prepend as first element to stay strictly in the background
+    document.body.prepend(gridContainer);
+  }
+  
+  const blockSize = 50; // Size of each hoverable block
+  const updateGrid = () => {
+    // Avoid rebuilding if page is hidden
+    if (document.hidden) return;
+    
+    gridContainer.innerHTML = '';
+    const cols = Math.ceil(window.innerWidth / blockSize) + 2;
+    const rows = Math.ceil(window.innerHeight / blockSize) + 2;
+    const totalBlocks = cols * rows;
+    
+    gridContainer.style.setProperty('--cols', cols);
+    gridContainer.style.setProperty('--rows', rows);
+    
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < totalBlocks; i++) {
+        const block = document.createElement('div');
+        block.className = 'grid-block';
+        // Random neon rgb hue (saturated)
+        const hue = Math.floor(Math.random() * 360);
+        block.style.setProperty('--block-color', `hsl(${hue}, 100%, 65%)`);
+        fragment.appendChild(block);
+    }
+    gridContainer.appendChild(fragment);
+  };
+  
+  updateGrid();
+  
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateGrid, 300);
+  });
+};
+
+createGrid();
 
