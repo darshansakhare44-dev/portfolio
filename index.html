@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Northline Analytics</title>
-  <meta
-    name="description"
-    content="A minimal portfolio landing page for analytics, research, development, and finance tracking services."
-  >
+  <meta name="description"
+    content="A minimal portfolio landing page for analytics, research, development, and finance tracking services.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
+    rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+  <div class="page-storm" aria-hidden="true">
+    <span class="storm-vein storm-vein-left"></span>
+    <span class="storm-vein storm-vein-right"></span>
+    <span class="storm-haze storm-haze-top"></span>
+    <span class="storm-haze storm-haze-bottom"></span>
+  </div>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Northline Analytics home">
@@ -24,22 +29,17 @@
         <span class="brand-text">Northline Analytics</span>
       </a>
 
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-nav"
-        aria-label="Open navigation"
-      >
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"
+        aria-label="Open navigation">
         <span></span>
         <span></span>
       </button>
 
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#insights">Insights</a>
-        <a href="#contact">Contact</a>
+        <a href="#services"><span>Services</span></a>
+        <a href="#work"><span>Work</span></a>
+        <a href="#insights"><span>Insights</span></a>
+        <a href="#contact"><span>Contact</span></a>
       </nav>
     </div>
   </header>
@@ -83,50 +83,111 @@
 
     <section class="section section-soft" id="services">
       <div class="container">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Core services</p>
-          <h2>Built for teams that need clarity without extra complexity.</h2>
-          <p>
-            Every engagement is shaped to make information easier to trust, communicate,
-            and act on.
-          </p>
+        <div class="section-heading services-heading reveal">
+          <div class="services-heading-copy">
+            <p class="eyebrow">Core services</p>
+            <h2>Built for teams that need clarity without extra complexity.</h2>
+            <p>
+              Every engagement is shaped to make information easier to trust, communicate,
+              and act on.
+            </p>
+          </div>
+          <div class="storm-cluster" aria-hidden="true">
+            <span class="storm-aura"></span>
+            <span class="storm-lightning storm-lightning-one"></span>
+            <span class="storm-lightning storm-lightning-two"></span>
+            <span class="storm-cloud storm-cloud-back"></span>
+            <span class="storm-cloud storm-cloud-mid"></span>
+            <span class="storm-cloud storm-cloud-front"></span>
+          </div>
         </div>
 
         <div class="card-grid services-grid">
-          <article class="card reveal">
+          <article class="card hover-lift reveal service-card service-card-excel" data-tool="excel">
             <p class="card-index">01</p>
             <h3>Data analytics</h3>
             <p>
               Organize messy inputs, define useful metrics, and surface the numbers that
               actually matter to performance.
             </p>
+            <div class="tool-sigil" aria-hidden="true">
+              <div class="tool-geometry">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="tool-lightning"></div>
+              <svg class="tool-icon tool-icon-excel" viewBox="0 0 64 64" role="presentation">
+                <path d="M12 12h24v40H12z" />
+                <path d="M28 18h24v28H28z" />
+                <path d="M24 22 17 32l7 10M28 22l7 10-7 10" />
+              </svg>
+            </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card hover-lift reveal service-card service-card-sql" data-tool="sql">
             <p class="card-index">02</p>
             <h3>Research systems</h3>
             <p>
               Structure qualitative and quantitative research into themes, patterns, and
               concise findings that support stronger decisions.
             </p>
+            <div class="tool-sigil" aria-hidden="true">
+              <div class="tool-geometry">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="tool-lightning"></div>
+              <svg class="tool-icon tool-icon-sql" viewBox="0 0 64 64" role="presentation">
+                <ellipse cx="32" cy="17" rx="16" ry="7" />
+                <path d="M16 17v20c0 3.9 7.2 7 16 7s16-3.1 16-7V17" />
+                <path d="M16 27c0 3.9 7.2 7 16 7s16-3.1 16-7" />
+                <path d="M16 37c0 3.9 7.2 7 16 7s16-3.1 16-7" />
+              </svg>
+            </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card hover-lift reveal service-card service-card-numpy" data-tool="numpy">
             <p class="card-index">03</p>
             <h3>Product-minded development</h3>
             <p>
               Translate analysis into lightweight tools, interfaces, and workflows that
               teams can use immediately.
             </p>
+            <div class="tool-sigil" aria-hidden="true">
+              <div class="tool-geometry">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="tool-lightning"></div>
+              <svg class="tool-icon tool-icon-numpy" viewBox="0 0 64 64" role="presentation">
+                <path d="M18 16h13v32H18z" />
+                <path d="M33 16h13v32H33z" />
+                <path d="M18 16 46 48" />
+              </svg>
+            </div>
           </article>
 
-          <article class="card reveal">
+          <article class="card hover-lift reveal service-card service-card-tableau" data-tool="tableau">
             <p class="card-index">04</p>
             <h3>Finance tracking</h3>
             <p>
               Create simple reporting views for cash flow, spend categories, recurring
               costs, and operational trends without making the process feel heavy.
             </p>
+            <div class="tool-sigil" aria-hidden="true">
+              <div class="tool-geometry">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="tool-lightning"></div>
+              <svg class="tool-icon tool-icon-tableau" viewBox="0 0 64 64" role="presentation">
+                <path d="M32 12v16M24 20h16M32 36v16M24 44h16M16 32h16M24 24v16M48 32H32M40 24v16" />
+              </svg>
+            </div>
           </article>
         </div>
       </div>
@@ -141,7 +202,7 @@
 
         <div class="process-layout">
           <div class="process-steps">
-            <article class="process-card reveal">
+            <article class="process-card hover-lift reveal">
               <span>Discover</span>
               <h3>Map the signals</h3>
               <p>
@@ -150,7 +211,7 @@
               </p>
             </article>
 
-            <article class="process-card reveal">
+            <article class="process-card hover-lift reveal">
               <span>Shape</span>
               <h3>Build a useful structure</h3>
               <p>
@@ -159,7 +220,7 @@
               </p>
             </article>
 
-            <article class="process-card reveal">
+            <article class="process-card hover-lift reveal">
               <span>Deliver</span>
               <h3>Keep it actionable</h3>
               <p>
@@ -169,7 +230,7 @@
             </article>
           </div>
 
-          <aside class="feature-panel reveal">
+          <aside class="feature-panel hover-lift reveal">
             <p class="panel-label">Focus area</p>
             <h3>Finance tracking that supports broader operational insight.</h3>
             <p>
@@ -190,15 +251,15 @@
     <section class="section section-accent" id="insights">
       <div class="container">
         <div class="metrics-grid">
-          <article class="metric-card reveal">
+          <article class="metric-card hover-lift reveal">
             <p class="metric-value">4</p>
             <p class="metric-label">capability lanes delivered through one clear workflow</p>
           </article>
-          <article class="metric-card reveal">
+          <article class="metric-card hover-lift reveal">
             <p class="metric-value">Lean</p>
             <p class="metric-label">interfaces and reports designed to stay readable at a glance</p>
           </article>
-          <article class="metric-card reveal">
+          <article class="metric-card hover-lift reveal">
             <p class="metric-value">Practical</p>
             <p class="metric-label">outputs shaped for real teams, not presentation slides alone</p>
           </article>
@@ -212,18 +273,34 @@
     </section>
 
     <section class="section" id="contact">
-      <div class="container contact-panel reveal">
-        <div>
+      <div class="container contact-panel hover-lift reveal">
+        <div class="contact-copy">
           <p class="eyebrow">Contact</p>
           <h2>Need a cleaner way to work with data and reporting?</h2>
+          <p>
+            Northline Analytics supports teams that want better structure, sharper insight,
+            and simpler communication across research, development, and finance-focused work.
+          </p>
         </div>
-        <p>
-          Northline Analytics supports teams that want better structure, sharper insight,
-          and simpler communication across research, development, and finance-focused work.
-        </p>
-        <a class="button button-primary" href="mailto:hello@northlineanalytics.com">
-          hello@northlineanalytics.com
-        </a>
+        <div class="contact-links" aria-label="Contact methods">
+          <a class="contact-item" href="mailto:hello@northlineanalytics.com">
+            <span class="contact-label">Email</span>
+            <span class="contact-value">hello@northlineanalytics.com</span>
+          </a>
+          <a class="contact-item" href="https://instagram.com/northlineanalytics" target="_blank" rel="noreferrer">
+            <span class="contact-label">Instagram</span>
+            <span class="contact-value">@northlineanalytics</span>
+          </a>
+          <a class="contact-item" href="https://linkedin.com/company/northlineanalytics" target="_blank"
+            rel="noreferrer">
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-value">Northline Analytics</span>
+          </a>
+          <a class="contact-item" href="tel:+1-202-555-0147">
+            <span class="contact-label">Phone</span>
+            <span class="contact-value">+1 (202) 555-0147</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -237,4 +314,6 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
+>
